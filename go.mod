@@ -2,7 +2,10 @@ module github.com/mieh/api-to-csv
 
 go 1.20
 
-require google.golang.org/api v0.110.0
+require (
+	google.golang.org/api v0.110.0
+	gopkg.in/yaml.v2 v2.4.0
+)
 
 require (
 	cloud.google.com/go/compute v1.18.0 // indirect
@@ -21,5 +24,4 @@ require (
 	google.golang.org/genproto v0.0.0-20230209215440-0dfe4f8abfcc // indirect
 	google.golang.org/grpc v1.53.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

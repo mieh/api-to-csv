@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 
 	"github.com/mieh/api-to-csv/output"
 	"gopkg.in/yaml.v2"
@@ -60,7 +59,7 @@ func main() {
 	}
 
 	// Convert response body to CSV string
-	csvString, err := convertToCSV(responseBody)
+	csvString, err := ConvertToCsv(responseBody)
 	if err != nil {
 		log.Fatalf("Error converting response body to CSV: %v", err)
 	}
@@ -68,7 +67,7 @@ func main() {
 	// Output the CSV string based on the outputType flag
 	switch config.OutputType {
 	case "toConsole":
-		err = output.ToConsole()(csvString)
+		err = output.ToConsole(csvString)
 		if err != nil {
 			log.Fatalf("Error outputting CSV to console: %v", err)
 		}

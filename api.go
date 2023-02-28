@@ -13,25 +13,40 @@ type Response struct {
 }
 
 func GetApiData(apiUrl string, bearerToken string) ([]Response, error) {
-	client := &http.Client{}
-
-	req, err := http.NewRequest("GET", apiUrl, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Set("Authorization", "Bearer "+bearerToken)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
 	var result []Response
-	err = json.NewDecoder(resp.Body).Decode(&result)
-	if err != nil {
-		return nil, err
+
+	for apiUrl != "" {
+		// Make API request
+		client := &http.Client{}
+		req, err := http.NewRequest("GET", apiUrl, nil)
+		if err != nil {
+			return nil, err
+		}
+
+		req.Header.Set("Authorization", "Bearer "+bearerToken)
+
+		resp, err := client.Do(req)
+		if err != nil {
+			return nil, err
+		}
+		defer resp.Body.Close()
+
+		// Decode response body
+		var response struct {
+			Results []Response `json:"results"`
+			NextUrl string     `json:"nextUrl"`
+		}
+
+		err = json.NewDecoder(resp.Body).Decode(&response)
+		if err != nil {
+			return nil, err
+		}
+
+		// Append results to the overall result
+		result = append(result, response.Results...)
+
+		// Update apiUrl for the next page
+		apiUrl = response.NextUrl
 	}
 
 	return result, nil

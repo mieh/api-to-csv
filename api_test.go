@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/mieh/api-to-csv/api"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -31,7 +30,6 @@ func TestGetApiData(t *testing.T) {
 	defer server.Close()
 
 	// Make a request to the mock API server with a fake token
-	token := "fake_token"
 	response, err := http.Get(server.URL)
 	if err != nil {
 		t.Fatalf("Error making API request: %v", err)
